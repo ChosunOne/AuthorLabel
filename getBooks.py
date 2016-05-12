@@ -1,14 +1,15 @@
 import requests
-import BeautifulSoup
+import re
+from bs4 import BeautifulSoup
 
 #Script based off of https://www.reddit.com/r/learnpython/comments/1y1kit/my_script_to_download_top_100_books_from_project/
 
-def dowload_top_100():
+def download_top_100():
     '''This script will download Top 100 books of last 30 days from Project 
     Gutenberg and saves them with appropriate file name'''
-    base_url = 'http://sailor.gutenberg.lib.md.us/  '#base_url = 'http://www.gutenberg.myebook.bg/'
+    base_url = 'http://sailor.gutenberg.lib.md.us/'#base_url = 'http://www.gutenberg.myebook.bg/'
     response = requests.get('http://www.gutenberg.org/browse/scores/top')
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, "html.parser")
     h_tag = soup.find(id='books-last30')
     ol_tag = h_tag.next_sibling.next_sibling
     for a_tag in ol_tag.find_all('a'):
@@ -19,9 +20,12 @@ def dowload_top_100():
         # ugh, I know this is ugly.
         url = base_url + '/'.join(list(book_id[:-1])) + '/' + book_id + '/' + book_id + '.txt'
         r = requests.get(url)
+        file_name = 'books/' + book_name + '.txt'
         if r.status_code == requests.codes.ok:
             # print 'Downloaded... ', file_name
             with open(file_name, 'w') as f:
                 f.write(r.text.encode('UTF-8'))
         else:
             print 'Failed for ', book_id
+
+download_top_100()
