@@ -39,7 +39,7 @@ def getText(path, pagesPerChapter, linesPerPage):
 
 	return chapters
 
-def blobify(path, pagesPerChapter, linesPerPage):
+def blobify(path, pagesPerChapter = 10, linesPerPage = 35):
 	"""Make a text blob out of a string from a path"""
 	book = getText(path, pagesPerChapter, linesPerPage)
 	blobs = []
