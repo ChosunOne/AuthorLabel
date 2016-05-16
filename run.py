@@ -1,20 +1,19 @@
 from modules import blobExtractor
 from modules import featureExtractor
+from modules import arff_writer
 import os
 import random
 
 books = []
 for f in os.listdir('books'):
-	if f.endswith("by Jonathan Swift.txt"):
-		books.append(f)
+  books.append(f)
 
-book = random.sample(books, 1)[0]
-print book
-blobs = blobExtractor.blobify('books/' + book)
-blob = random.sample(blobs, 1)[0]
-#tags = featureExtractor.getTags(random.sample(blobs, 1)[0])
-#tagCounts = featureExtractor.getTagCounts(tags)
-#print featureExtractor.getTagPercentages(tagCounts)
-#print featureExtractor.getSentiment()
-print featureExtractor.getWordLength(blob)
-print featureExtractor.getSentenceLength(blob)
+blobs = []
+directory = 'books'
+for b in books:
+  blobs += blobExtractor.blobify(directory, b)
+blobs = random.sample(blobs, 100)  
+
+blob_results = featureExtractor.get_features(blobs)
+(attributes, data) = featureExtractor.sort_data(blob_results)
+arff_writer.write_file('output/output.arff', attributes, data)

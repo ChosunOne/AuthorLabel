@@ -91,4 +91,8 @@ ENV/
 # Mac
 .DS_Store
 
+# Books
 books/*.txt
+
+# Output
+output/*.arff

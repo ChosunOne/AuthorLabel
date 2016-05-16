@@ -1,4 +1,5 @@
-import textblob
+from textblob import TextBlob
+from blob import Blob
 
 def getText(path, pagesPerChapter, linesPerPage):
 	"""Get the text of a book as a string"""
@@ -10,7 +11,7 @@ def getText(path, pagesPerChapter, linesPerPage):
 			if counter == 0:
 				page = []
 			
-			page.append(line.replace("\n", ""))
+			page.append(unicode(line.replace('\n', ' ').replace('\r', ''), errors='replace'))
 			counter += 1
 
 			if counter > linesPerPage:
@@ -39,13 +40,17 @@ def getText(path, pagesPerChapter, linesPerPage):
 
 	return chapters
 
-def blobify(path, pagesPerChapter = 10, linesPerPage = 35):
+def getInfo(book):
+	divider = ' by '
+	split = book.replace('.txt', '').rpartition(divider)
+	return split[2], split[0]
+
+def blobify(directory, book, pagesPerChapter = 10, linesPerPage = 35):
 	"""Make a text blob out of a string from a path"""
-	book = getText(path, pagesPerChapter, linesPerPage)
+	text = getText(directory + '/' + book, pagesPerChapter, linesPerPage)
+	(author, title) = getInfo(book)
 	blobs = []
-	for chapter in book:
-		blob = textblob.TextBlob(chapter)
-		blobs.append(blob)
+	for chapter in text:
+		tb = TextBlob(chapter)
+		blobs.append(Blob(tb, author, title))
 	return blobs
-
-
