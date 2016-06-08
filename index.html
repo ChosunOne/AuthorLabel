@@ -22,25 +22,29 @@
       <h3>
 <a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Motivation</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
+<p>It is of great interest to the historical and literary community to be able to identify an author based on the style and structure in their texts. The authorship of many famous works is disputed or unknown, and being able to resolve the true author would lead to a greater insight into the era and people to whom the text was written.  Our goal is to be able to take a sample of text whose authorship is known, and through natural language processing and machine learning determine the author of another text whose authorship is unknown.</p>
 
 <h3>
 <a id="solution" class="anchor" href="#solution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Solution</h3>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+<p>The model classifies the author of a text sample to one of many famous authors based on training data from texts of said authors. We extracted features from the text samples using TextBlob (a natural language processing package). Many of the features we extracted were part of speech percentages.  For example, adjectives, coordinating conjunctions, possessive pronouns and more. We were also able to extract sentiment, such as polarity and subjectivity, word length and sentence length. We tried tried J48, Random Forest, Naive Bayes, Bayes Net and Multilayer Perceptron on these features and found that Multilayer Perceptron worked best in 10-fold cross validation.</p>
 
 <h3>
 <a id="training-and-testing" class="anchor" href="#training-and-testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Training and Testing</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Our dataset was composed of 76 of the top 100 books from Project Gutenberg over the last 30 days. These books were written by 56 different authors. We split up each book into many smaller samples (about 10 pages each). We used 10-fold cross validation on all the classifiers to determine which classifier most accurately classified the data. We also had a test set of 56 books that we used to test our classifier.</p>
 
 <h3>
 <a id="results" class="anchor" href="#results" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Results</h3>
 
+<p>After determining that multilayer perceptron was the best classifier using 10-fold cross validation, we used the test set we had set aside previously. The test set achieved 44.146% accuracy. For comparison ZeroR had 2.686% accuracy. The output of our model on the test data suggests that authors do indeed have invariant features that can be used to identify unclassified texts.  However, the scope of our training data was too small to reliably distinguish between book-invariant and author-invariant features.  If the test text was from a book with a significantly different genre, type, or style the model consistently scored lower accuracy.  Even with a small data set for training, the results were significantly better than random, suggesting that it is possible to find author-invariant features.</p>
+
+<img src="Performance by Author.png"></img>
+
 <h3>
 <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-<p>Author Label was developed and produced by Josiah Evans (<a href="http://www.github.com/ChosunOne" class="user-mention">@ChosunOne</a>) and Ben Meline (<a href="https://www.github.com/benmel" class="user-mention">@benmel</a>) for EECS 349 Machine Learning at Northwestern University.
+<p>Author Label was developed and produced by Josiah Evans (<a href="http://www.github.com/ChosunOne" class="user-mention">@ChosunOne</a>, josiahevans2016 [at] u [dot] northwestern [dot] edu) and Ben Meline (<a href="https://www.github.com/benmel" class="user-mention">@benmel</a>, benjaminmeline2015 [at] u [dot] northwestern [dot] edu) for EECS 349 Machine Learning at Northwestern University.
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ChosunOne/AuthorLabel">Author Label</a> is maintained by <a href="https://github.com/ChosunOne">ChosunOne</a>.</span>
