@@ -93,6 +93,7 @@ ENV/
 
 # Books
 books/*.txt
+test_books/*.txt
 
 # Output
 output/*.arff

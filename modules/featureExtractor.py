@@ -31,6 +31,7 @@ def get_word_length(blob):
 	words = blob.words
 	totalWords = len(words)
 	totalChars = sum(len(s) for s in words)
+	if totalWords == 0: return 0
 	return float(totalChars) / totalWords
 
 def get_sentence_length(blob):
